@@ -548,20 +548,16 @@ class BracketedPatternTest {
                 BracketedPattern.expandBrackets("[author:lower]", ';', dbentry, database));
     }
 
-    static Stream<Arguments> resolvedFieldAndFormat() {
-        return Stream.of(
-                Arguments.of("[author]", "Eric von Hippel and Georg von Krogh"),
-                Arguments.of("[unknownkey]", ""),
-                Arguments.of("[:]", ""),
-                Arguments.of("[:lower]", ""),
-                Arguments.of("[author:lower]", "eric von hippel and georg von krogh"),
-                Arguments.of("[citationkey]", ""),
-                Arguments.of("[citationkey:]", "")
-        );
-    }
-
     @ParameterizedTest
-    @MethodSource
+    @CsvSource({
+            "[author], Eric von Hippel and Georg von Krogh",
+            "[unknownkey], ''",
+            "[:], ''",
+            "[:lower], ''",
+            "[author:lower], eric von hippel and georg von krogh",
+            "[citationkey], ''",
+            "[citationkey:], ''"
+    })
     void resolvedFieldAndFormat(String pattern, String expected) {
         BibEntry child = new BibEntry().withField(StandardField.CROSSREF, "HipKro03");
         database.insertEntry(child);
@@ -665,9 +661,9 @@ class BracketedPatternTest {
 
     @ParameterizedTest
     @CsvSource({
-            "'[title:camel1]', 'Open'",
-            "'[title:camel4]', 'OpenSourceSoftwareAnd'",
-            "'[title:camel10]', 'OpenSourceSoftwareAndThePrivateCollectiveInnovationModelIssues'"
+            "[title:camel1], Open",
+            "[title:camel4], OpenSourceSoftwareAnd",
+            "[title:camel10], OpenSourceSoftwareAndThePrivateCollectiveInnovationModelIssues"
     })
     void expandBracketsCamelNModifier(String pattern, String expected) {
         assertEquals(expected,
