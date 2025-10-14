@@ -492,7 +492,7 @@ class CitationKeyGeneratorTest {
      * Test the [authN_M] pattern
      */
     @ParameterizedTest
-    @MethodSource("authNM") // 使用与测试方法同名的方法作为数据源
+    @MethodSource("authNM")
     void authNM(BibEntry entry, int n, int m, String expected) {
         String pattern = AUTHNOFMTH.formatted(n, m);
         assertEquals(expected, generateKey(entry, pattern));
