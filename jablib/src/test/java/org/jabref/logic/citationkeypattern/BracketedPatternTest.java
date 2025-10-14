@@ -39,8 +39,7 @@ class BracketedPatternTest {
     void setUp() {
         bibentry = new BibEntry().withField(StandardField.AUTHOR, "O. Kitsune")
                                  .withField(StandardField.YEAR, "2017")
-                                 .withField(StandardField.PAGES, "213--216")
-                                 .withField(StandardField.TITLE, "Open Source Software And The Private Collective Innovation Model Issues");
+                                 .withField(StandardField.PAGES, "213--216");
 
         dbentry = new BibEntry(StandardEntryType.Article)
                 .withCitationKey("HipKro03")
@@ -666,8 +665,10 @@ class BracketedPatternTest {
             "[title:camel10], OpenSourceSoftwareAndThePrivateCollectiveInnovationModelIssues"
     })
     void expandBracketsCamelNModifier(String pattern, String expected) {
+        BibEntry bibEntry = new BibEntry()
+                .withField(StandardField.TITLE, "Open Source Software And The Private Collective Innovation Model Issues");
         assertEquals(expected,
-                BracketedPattern.expandBrackets(pattern, ';', bibentry, null));
+                BracketedPattern.expandBrackets(pattern, ';', bibEntry, null));
     }
 
     /**
@@ -788,8 +789,24 @@ class BracketedPatternTest {
             "'[author] have published [title] in [journal].', 'Eric von Hippel and Georg von Krogh have published Open Source Software and the \"Private Collective\" Innovation Model: Issues for Organization Science in Organization Science.'"
     })
     void expandBracketsWithTestCasesFromRegExpBasedFileFinder(String pattern, String expected) {
+        BibEntry entry = new BibEntry(StandardEntryType.Article)
+                .withCitationKey("HipKro03")
+                .withField(StandardField.AUTHOR, "Eric von Hippel and Georg von Krogh")
+                .withField(StandardField.TITLE, "Open Source Software and the \"Private-Collective\" Innovation Model: Issues for Organization Science")
+                .withField(StandardField.JOURNAL, "Organization Science")
+                .withField(StandardField.YEAR, "2003")
+                .withField(StandardField.VOLUME, "14")
+                .withField(StandardField.PAGES, "209--223")
+                .withField(StandardField.NUMBER, "2")
+                .withField(StandardField.ADDRESS, "Institute for Operations Research and the Management Sciences (INFORMS), Linthicum, Maryland, USA")
+                .withField(StandardField.DOI, "http://dx.doi.org/10.1287/orsc.14.2.209.14992")
+                .withField(StandardField.ISSN, "1526-5455")
+                .withField(StandardField.PUBLISHER, "INFORMS");
+
+        BibDatabase database = new BibDatabase();
+        database.insertEntry(entry);
         assertEquals(expected,
-                BracketedPattern.expandBrackets(pattern, ';', dbentry, database));
+                BracketedPattern.expandBrackets(pattern, ';', entry, database));
     }
 
     @Test
