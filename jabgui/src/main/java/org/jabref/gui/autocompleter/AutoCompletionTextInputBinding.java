@@ -27,6 +27,7 @@
 package org.jabref.gui.autocompleter;
 
 import java.util.Collection;
+import java.util.Objects;
 
 import javafx.beans.value.ChangeListener;
 import javafx.scene.control.TextInputControl;
@@ -39,7 +40,7 @@ import org.controlsfx.control.textfield.AutoCompletionBinding;
 
 /**
  * Represents a binding between a text input control and an auto-completion popup
- * This class is a slightly modified version of {@link impl.org.controlsfx.autocompletion.AutoCompletionTextFieldBinding}
+ * This class is a slightly modified version of {@link org.controlsfx.control.textfield.AutoCompletionBinding}
  * that works with general text input controls instead of just text fields.
  */
 public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> {
@@ -47,8 +48,8 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
     /**
      * String converter to be used to convert suggestions to strings.
      */
-    private StringConverter<T> converter;
-    private AutoCompletionStrategy inputAnalyzer;
+    private final StringConverter<T> converter;
+    private final AutoCompletionStrategy inputAnalyzer;
     private final ChangeListener<String> textChangeListener = (_, _, newText) -> {
         if (getCompletionTarget().isFocused()) {
             setUserInputText(newText);
@@ -69,30 +70,11 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
      * Creates a new auto-completion binding between the given textInputControl
      * and the given suggestion provider.
      */
-    private AutoCompletionTextInputBinding(final TextInputControl textInputControl,
-                                           Callback<ISuggestionRequest, Collection<T>> suggestionProvider) {
-
-        this(textInputControl,
-                suggestionProvider,
-                AutoCompletionTextInputBinding.defaultStringConverter(),
-                new ReplaceStrategy());
-    }
-
-    private AutoCompletionTextInputBinding(final TextInputControl textInputControl,
-                                           final Callback<ISuggestionRequest, Collection<T>> suggestionProvider,
-                                           final StringConverter<T> converter) {
-        this(textInputControl, suggestionProvider, converter, new ReplaceStrategy());
-    }
-
-    private AutoCompletionTextInputBinding(final TextInputControl textInputControl,
-                                           final Callback<ISuggestionRequest, Collection<T>> suggestionProvider,
-                                           final StringConverter<T> converter,
-                                           final AutoCompletionStrategy inputAnalyzer) {
-
-        super(textInputControl, suggestionProvider, converter);
-        this.converter = converter;
-        this.inputAnalyzer = inputAnalyzer;
-
+    private AutoCompletionTextInputBinding(final Builder<T> builder) {
+        super(builder.textInputControl, builder.suggestionProvider, builder.converter);
+        this.converter = builder.converter;
+        this.inputAnalyzer = builder.inputAnalyzer;
+        this.showOnFocus = builder.showOnFocus;
         getCompletionTarget().textProperty().addListener(textChangeListener);
         getCompletionTarget().focusedProperty().addListener(focusChangedListener);
     }
@@ -112,20 +94,8 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
         };
     }
 
-    public static <T> void autoComplete(TextInputControl textArea, Callback<ISuggestionRequest, Collection<T>> suggestionProvider) {
-        new AutoCompletionTextInputBinding<>(textArea, suggestionProvider);
-    }
-
-    public static <T> void autoComplete(TextInputControl textArea, Callback<ISuggestionRequest, Collection<T>> suggestionProvider, StringConverter<T> converter) {
-        new AutoCompletionTextInputBinding<>(textArea, suggestionProvider, converter);
-    }
-
-    public static <T> AutoCompletionTextInputBinding<T> autoComplete(TextInputControl textArea, Callback<ISuggestionRequest, Collection<T>> suggestionProvider, StringConverter<T> converter, AutoCompletionStrategy inputAnalyzer) {
-        return new AutoCompletionTextInputBinding<>(textArea, suggestionProvider, converter, inputAnalyzer);
-    }
-
-    public static <T> AutoCompletionTextInputBinding<T> autoComplete(TextInputControl textArea, Callback<ISuggestionRequest, Collection<T>> suggestionProvider, AutoCompletionStrategy inputAnalyzer) {
-        return autoComplete(textArea, suggestionProvider, AutoCompletionTextInputBinding.defaultStringConverter(), inputAnalyzer);
+    public static <T> Builder<T> builder() {
+        return new Builder<>();
     }
 
     private void setUserInputText(String newText) {
@@ -163,4 +133,85 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
     public void setShowOnFocus(boolean showOnFocus) {
         this.showOnFocus = showOnFocus;
     }
+
+    public static class Builder<T> {
+            private TextInputControl textInputControl;
+            private Callback<ISuggestionRequest, Collection<T>> suggestionProvider;
+            private StringConverter<T> converter = AutoCompletionTextInputBinding.defaultStringConverter();
+            private AutoCompletionStrategy inputAnalyzer = new ReplaceStrategy();
+            private boolean showOnFocus = false; // Assuming default is false
+
+            /**
+             * Sets the required TextInputControl.
+             * @param textInputControl The TextInputControl to bind to.
+             *
+             * @return The builder instance.
+             */
+            public Builder<T> forTextInputControl(TextInputControl textInputControl) {
+                this.textInputControl = textInputControl;
+                return this;
+            }
+
+            /**
+             * Sets the required suggestion provider.
+             * @param suggestionProvider The callback to retrieve suggestions.
+             *
+             * @return The builder instance.
+             */
+            @SuppressWarnings("unchecked")
+            public Builder<T> usingSuggestionProvider(Callback<ISuggestionRequest, Collection<?>> suggestionProvider) {
+                this.suggestionProvider = (Callback<ISuggestionRequest, Collection<T>>) (Callback<?, ?>) suggestionProvider;
+                return this;
+            }
+
+            /**
+             * Sets the optional StringConverter.
+             * @param converter The converter for suggestions to strings.
+             * @return The builder instance.
+             */
+            public Builder<T> withStringConverter(StringConverter<T> converter) {
+                this.converter = converter;
+                return this;
+            }
+
+            /**
+             * Sets the optional AutoCompletionStrategy.
+             * @param inputAnalyzer The strategy to analyze the input text.
+             *
+             * @return The builder instance.
+             */
+            public Builder<T> withInputAnalyzer(AutoCompletionStrategy inputAnalyzer) {
+                this.inputAnalyzer = inputAnalyzer;
+                return this;
+            }
+
+            /**
+             * Sets whether the popup should show on focus gain.
+             * @param showOnFocus True to show on focus, false otherwise.
+             * @return The builder instance.
+             */
+            public Builder<T> showOnFocus(boolean showOnFocus) {
+                this.showOnFocus = showOnFocus;
+                return this;
+            }
+
+            /**
+             * Builds the AutoCompletionTextInputBinding object.
+             * @return A new instance of AutoCompletionTextInputBinding.
+             * @throws NullPointerException if required fields are not set.
+             */
+            public AutoCompletionTextInputBinding<T> build() {
+                Objects.requireNonNull(textInputControl, "TextInputControl is required.");
+                Objects.requireNonNull(suggestionProvider, "SuggestionProvider is required.");
+
+                if (converter == null) {
+                    converter = AutoCompletionTextInputBinding.defaultStringConverter();
+                }
+                if (inputAnalyzer == null) {
+                    inputAnalyzer = new ReplaceStrategy(); // Assuming ReplaceStrategy is the default
+                }
+
+                return new AutoCompletionTextInputBinding<>(this);
+            }
+        }
 }

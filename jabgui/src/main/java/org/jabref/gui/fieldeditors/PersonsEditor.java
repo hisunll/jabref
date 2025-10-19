@@ -15,6 +15,7 @@ import org.jabref.gui.undo.RedoAction;
 import org.jabref.gui.undo.UndoAction;
 import org.jabref.gui.util.uithreadaware.UiThreadStringProperty;
 import org.jabref.logic.integrity.FieldCheckers;
+import org.jabref.model.entry.Author;
 import org.jabref.model.entry.BibEntry;
 import org.jabref.model.entry.field.Field;
 
@@ -42,7 +43,11 @@ public class PersonsEditor extends HBox implements FieldEditorFX {
         establishBinding(textInput, decoratedStringProperty, keyBindingRepository, undoAction, redoAction);
         ((ContextMenuAddable) textInput).initContextMenu(EditorMenus.getNameMenu(textInput), keyBindingRepository);
         this.getChildren().add(textInput);
-        AutoCompletionTextInputBinding.autoComplete(textInput, viewModel::complete, viewModel.getAutoCompletionConverter(), viewModel.getAutoCompletionStrategy());
+        AutoCompletionTextInputBinding.<Author>builder()
+                .forTextInputControl(textInput)
+                .usingSuggestionProvider(viewModel::complete)
+                .withStringConverter(viewModel.getAutoCompletionConverter())
+                .withInputAnalyzer(viewModel.getAutoCompletionStrategy()).build();
         new EditorValidator(preferences).configureValidation(viewModel.getFieldValidator().getValidationStatus(), textInput);
     }
 
