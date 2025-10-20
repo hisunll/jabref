@@ -78,7 +78,9 @@ class CitationsRelationsTabViewModelTest {
         when(duplicateCheck.isDuplicate(any(), any(), any())).thenReturn(false);
 
         StateManager stateManager = mock(StateManager.class, Answers.RETURNS_DEEP_STUBS);
-        bibDatabaseContext = new BibDatabaseContext(new BibDatabase());
+        bibDatabaseContext = BibDatabaseContext.builder()
+                                               .withDatabase(new BibDatabase())
+                                               .build();
         bibDatabaseContext.setMode(BibDatabaseMode.BIBTEX);
         when(stateManager.getActiveDatabase()).thenReturn(Optional.of(bibDatabaseContext));
 

@@ -503,11 +503,11 @@ public class SemanticMergeAnalyzerTest {
     // ------- helpers: build entries and DBs -------
 
     private static BibDatabaseContext emptyDb() {
-        return new BibDatabaseContext();
+        return BibDatabaseContext.builder().build();
     }
 
     private static BibDatabaseContext dbOf(BibEntry... entries) {
-        BibDatabaseContext context = new BibDatabaseContext();
+        BibDatabaseContext context = BibDatabaseContext.builder().build();
         for (BibEntry entry : entries) {
             context.getDatabase().insertEntry(new BibEntry(entry));
         }

@@ -41,7 +41,7 @@ class YamlExporterTest {
                 SaveOrder.getDefaultSaveOrder(),
                 BlankLineBehaviour.DELETE_BLANKS);
 
-        databaseContext = new BibDatabaseContext();
+        databaseContext = BibDatabaseContext.builder().build();
     }
 
     @Test

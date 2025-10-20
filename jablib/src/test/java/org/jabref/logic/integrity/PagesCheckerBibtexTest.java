@@ -19,7 +19,7 @@ public class PagesCheckerBibtexTest {
 
     @BeforeEach
     void setUp() {
-        BibDatabaseContext database = new BibDatabaseContext();
+        BibDatabaseContext database = BibDatabaseContext.builder().build();
         database.setMode(BibDatabaseMode.BIBTEX);
         checker = new PagesChecker(database);
     }

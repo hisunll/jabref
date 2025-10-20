@@ -22,7 +22,7 @@ public class TitleCheckerTest {
 
         @BeforeEach
         void setUp() {
-            BibDatabaseContext databaseContext = new BibDatabaseContext();
+            BibDatabaseContext databaseContext = BibDatabaseContext.builder().build();
             databaseContext.setMode(BibDatabaseMode.BIBTEX);
             checker = new TitleChecker(databaseContext);
         }
@@ -77,7 +77,7 @@ public class TitleCheckerTest {
 
         @BeforeEach
         void setUp() {
-            BibDatabaseContext databaseBiblatex = new BibDatabaseContext();
+            BibDatabaseContext databaseBiblatex = BibDatabaseContext.builder().build();
             databaseBiblatex.setMode(BibDatabaseMode.BIBLATEX);
             checkerBiblatex = new TitleChecker(databaseBiblatex);
         }

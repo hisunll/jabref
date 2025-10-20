@@ -75,7 +75,7 @@ class LinkedFileViewModelTest {
         entry = new BibEntry()
                 .withCitationKey("asdf");
 
-        databaseContext = new BibDatabaseContext();
+        databaseContext = BibDatabaseContext.builder().build();
         taskExecutor = mock(TaskExecutor.class);
         dialogService = mock(DialogService.class);
 

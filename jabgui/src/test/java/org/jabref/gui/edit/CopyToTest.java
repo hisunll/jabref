@@ -71,8 +71,10 @@ public class CopyToTest {
         this.selectedEntries = FXCollections.observableArrayList();
         when(stateManager.getSelectedEntries()).thenReturn((ObservableList<BibEntry>) selectedEntries);
 
-        this.sourceDatabaseContext = new BibDatabaseContext(new BibDatabase(List.of(entry, entryWithCrossRef, referencedEntry)));
-        this.targetDatabaseContext = new BibDatabaseContext();
+        this.sourceDatabaseContext = BibDatabaseContext.builder()
+                                                       .withDatabase(new BibDatabase(List.of(entry, entryWithCrossRef, referencedEntry)))
+                                                       .build();
+        this.targetDatabaseContext = BibDatabaseContext.builder().build();
 
         CopyToPreferences copyToPreferences = mock(CopyToPreferences.class);
         when(preferences.getCopyToPreferences()).thenReturn(copyToPreferences);

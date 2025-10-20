@@ -44,7 +44,10 @@ class RemoveLinksToNotExistentFilesTest {
         MetaData metaData = new MetaData();
         metaData.setLibrarySpecificFileDirectory(newFileFolder.toAbsolutePath().toString());
 
-        BibDatabaseContext databaseContext = new BibDatabaseContext(new BibDatabase(), metaData);
+        BibDatabaseContext databaseContext = BibDatabaseContext.builder()
+                                                               .withDatabase(new BibDatabase())
+                                                               .withMetaData(metaData)
+                                                               .build();
         Files.createFile(testBibFolder);
         databaseContext.setDatabasePath(testBibFolder);
 

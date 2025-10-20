@@ -134,7 +134,9 @@ class IntegrityCheckTest {
 
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntry(entry);
-        BibDatabaseContext context = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(bibDatabase)
+                                                       .build();
 
         new IntegrityCheck(context,
                 mock(FilePreferences.class),
@@ -151,7 +153,9 @@ class IntegrityCheckTest {
                 .withField(field, value);
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntry(entry);
-        return new BibDatabaseContext(bibDatabase);
+        return BibDatabaseContext.builder()
+                                 .withDatabase(bibDatabase)
+                                 .build();
     }
 
     private BibDatabaseContext createContext(Field field, String value, MetaData metaData) {
@@ -159,7 +163,10 @@ class IntegrityCheckTest {
                 .withField(field, value);
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntry(entry);
-        return new BibDatabaseContext(bibDatabase, metaData);
+        return BibDatabaseContext.builder()
+                                 .withDatabase(bibDatabase)
+                                 .withMetaData(metaData)
+                                 .build();
     }
 
     private BibDatabaseContext createContext(Field field, String value) {

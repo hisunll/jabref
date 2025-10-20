@@ -29,7 +29,9 @@ public class BibWarningToIntegrityMessageConverterTest {
         database.insertEntry(firstEntry);
         database.insertEntry(secondEntry);
 
-        BibDatabaseContext context = new BibDatabaseContext(database);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(database)
+                                                       .build();
 
         List<BibWarning> warnings = List.of(
                 new BibWarning(SeverityType.WARNING, "empty journal", "journal", "Scholey_2013"),
@@ -56,7 +58,9 @@ public class BibWarningToIntegrityMessageConverterTest {
 
         BibDatabase database = new BibDatabase();
         database.insertEntry(scholey);
-        BibDatabaseContext context = new BibDatabaseContext(database);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(database)
+                                                       .build();
 
         List<BibWarning> warnings = List.of(
                 new BibWarning(SeverityType.WARNING, "empty journal", "journal", "Scholey_2013"),

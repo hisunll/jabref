@@ -68,30 +68,54 @@ public class BibDatabaseContext {
     private CoarseChangeFilter dbmsListener;
     private DatabaseLocation location;
 
-    public BibDatabaseContext() {
-        this(new BibDatabase());
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database) {
-        this(database, new MetaData());
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database, @NonNull MetaData metaData) {
-        this.database = database;
-        this.metaData = metaData;
-        this.location = DatabaseLocation.LOCAL;
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database, @NonNull MetaData metaData, Path path) {
-        this(database, metaData, path, DatabaseLocation.LOCAL);
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database, @NonNull MetaData metaData, Path path, @NonNull DatabaseLocation location) {
-        this(database, metaData);
-        this.path = path;
+    public BibDatabaseContext(final Builder builder) {
+        this.database = builder.database;
+        this.metaData = builder.metaData;
+        this.path = builder.path;
+        this.location = builder.location;
 
         if (location == DatabaseLocation.LOCAL) {
             convertToLocalDatabase();
+        }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private @NonNull BibDatabase database;
+        private @NonNull MetaData metaData;
+        private Path path = null;
+        private @NonNull DatabaseLocation location = DatabaseLocation.LOCAL;
+
+        private Builder() {
+            this.database = new BibDatabase();
+            this.metaData = new MetaData();
+        }
+
+        public Builder withDatabase(@NonNull BibDatabase database) {
+            this.database = database;
+            return this;
+        }
+
+        public Builder withMetaData(@NonNull MetaData metaData) {
+            this.metaData = metaData;
+            return this;
+        }
+
+        public Builder withDatabasePath(Path path) {
+            this.path = path;
+            return this;
+        }
+
+        public Builder withLocation(@NonNull DatabaseLocation location) {
+            this.location = location;
+            return this;
+        }
+
+        public BibDatabaseContext build() {
+            return new BibDatabaseContext(this);
         }
     }
 
@@ -305,7 +329,7 @@ public class BibDatabaseContext {
     }
 
     public static BibDatabaseContext empty() {
-        return new BibDatabaseContext(new BibDatabase(), new MetaData());
+        return BibDatabaseContext.builder().build();
     }
 
     @Override

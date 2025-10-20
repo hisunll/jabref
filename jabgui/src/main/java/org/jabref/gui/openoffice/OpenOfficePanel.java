@@ -334,7 +334,9 @@ public class OpenOfficePanel {
         boolean returnPartialResult = false;
         Optional<BibDatabase> newDatabase = ooBase.exportCitedHelper(databases, returnPartialResult);
         if (newDatabase.isPresent()) {
-            BibDatabaseContext databaseContext = new BibDatabaseContext(newDatabase.get());
+            BibDatabaseContext databaseContext = BibDatabaseContext.builder()
+                                                                   .withDatabase(newDatabase.get())
+                                                                   .build();
             LibraryTab libraryTab = LibraryTab.createLibraryTab(
                     databaseContext,
                     tabContainer,

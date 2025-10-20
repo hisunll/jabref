@@ -41,7 +41,9 @@ class BibliographyConsistencyCheckResultCsvWriterTest {
         database.insertEntry(first);
         database.insertEntry(second);
 
-        BibDatabaseContext bibContext = new BibDatabaseContext(database);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(database)
+                                                          .build();
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (count, total) -> {
         });
 
@@ -71,7 +73,9 @@ class BibliographyConsistencyCheckResultCsvWriterTest {
         database.insertEntry(first);
         database.insertEntry(second);
 
-        BibDatabaseContext bibContext = new BibDatabaseContext(database);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(database)
+                                                          .build();
         bibContext.setMode(BibDatabaseMode.BIBTEX);
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (count, total) -> {
         });
@@ -118,7 +122,9 @@ class BibliographyConsistencyCheckResultCsvWriterTest {
         database.insertEntry(fourth);
         database.insertEntry(fifth);
 
-        BibDatabaseContext bibContext = new BibDatabaseContext(database);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(database)
+                                                          .build();
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (count, total) -> {
         });
 
@@ -149,7 +155,9 @@ class BibliographyConsistencyCheckResultCsvWriterTest {
         database.insertEntry(first);
         database.insertEntry(second);
 
-        BibDatabaseContext bibContext = new BibDatabaseContext(database);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(database)
+                                                          .build();
         bibContext.setMode(BibDatabaseMode.BIBTEX);
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (count, total) -> {
         });

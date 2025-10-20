@@ -21,7 +21,7 @@ public class MsBibExportFormatTest {
 
     @BeforeEach
     void setUp() {
-        databaseContext = new BibDatabaseContext();
+        databaseContext = BibDatabaseContext.builder().build();
         msBibExportFormat = new MSBibExporter();
     }
 

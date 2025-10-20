@@ -27,7 +27,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CSLFormatUtilsTest {
 
     private static final BibEntry TEST_ENTRY = TestEntry.getTestEntry();
-    private static final BibDatabaseContext TEST_ENTRY_CONTEXT = new BibDatabaseContext(new BibDatabase(List.of(TestEntry.getTestEntry())));
+    private static final BibDatabaseContext TEST_ENTRY_CONTEXT = BibDatabaseContext.builder()
+                                                                                   .withDatabase(new BibDatabase(List.of(TestEntry.getTestEntry())))
+                                                                                   .build();
     private static final BibEntryTypesManager ENTRY_TYPES_MANAGER = new BibEntryTypesManager();
 
     private static final CitationStyleOutputFormat HTML_OUTPUT_FORMAT = CitationStyleOutputFormat.HTML;
@@ -388,7 +390,9 @@ class CSLFormatUtilsTest {
                 .withCitationKey("Smith_2020");
 
         List<BibEntry> entries = List.of(entry1, entry2);
-        BibDatabaseContext context = new BibDatabaseContext(new BibDatabase(entries));
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(new BibDatabase(entries))
+                                                       .build();
         context.setMode(BibDatabaseMode.BIBLATEX);
         String citation = CitationStyleGenerator.generateCitation(entries, style.getSource(), HTML_OUTPUT_FORMAT, context, ENTRY_TYPES_MANAGER);
         String actual = CSLFormatUtils.transformHTML(citation);
@@ -608,7 +612,9 @@ class CSLFormatUtilsTest {
     @ParameterizedTest
     @MethodSource
     void generateAlphanumericCitationTest(String expected, List<BibEntry> entries) {
-        BibDatabaseContext context = new BibDatabaseContext(new BibDatabase(entries));
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(new BibDatabase(entries))
+                                                       .build();
         String actual = generateAlphanumericCitation(entries, context);
         assertEquals(expected, actual);
     }
@@ -693,7 +699,9 @@ class CSLFormatUtilsTest {
     @ParameterizedTest
     @MethodSource
     void generateAuthorPrefixTest(String expected, BibEntry entry) {
-        BibDatabaseContext context = new BibDatabaseContext(new BibDatabase(List.of(entry)));
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(new BibDatabase(List.of(entry)))
+                                                       .build();
         String actual = CSLFormatUtils.generateAuthorPrefix(entry, context);
         assertEquals(expected, actual);
     }
@@ -756,7 +764,9 @@ class CSLFormatUtilsTest {
     @ParameterizedTest
     @MethodSource
     void generateAlphanumericInTextCitationTest(String expected, BibEntry entry) {
-        BibDatabaseContext context = new BibDatabaseContext(new BibDatabase(List.of(entry)));
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(new BibDatabase(List.of(entry)))
+                                                       .build();
         String actual = CSLFormatUtils.generateAlphanumericInTextCitation(entry, context);
         assertEquals(expected, actual);
     }

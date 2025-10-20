@@ -38,7 +38,7 @@ public class ExternalFilesEntryLinker {
     public ExternalFilesEntryLinker(ExternalApplicationsPreferences externalApplicationsPreferences, FilePreferences filePreferences, NotificationService notificationService, StateManager stateManager) {
         this.externalApplicationsPreferences = externalApplicationsPreferences;
         this.filePreferences = filePreferences;
-        this.bibDatabaseContextSupplier = () -> stateManager.getActiveDatabase().orElse(new BibDatabaseContext());
+        this.bibDatabaseContextSupplier = () -> stateManager.getActiveDatabase().orElse(BibDatabaseContext.builder().build());
         this.notificationService = notificationService;
     }
 

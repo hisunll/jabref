@@ -39,7 +39,10 @@ class AutoRenameFileOnEntryChangeTest {
         this.tempDir = tempDir;
         MetaData metaData = new MetaData();
         metaData.setLibrarySpecificFileDirectory(tempDir.toString());
-        BibDatabaseContext bibDatabaseContext = new BibDatabaseContext(new BibDatabase(), metaData);
+        BibDatabaseContext bibDatabaseContext = BibDatabaseContext.builder()
+                                                                  .withDatabase(new BibDatabase())
+                                                                  .withMetaData(metaData)
+                                                                  .build();
         GlobalCitationKeyPatterns keyPattern = GlobalCitationKeyPatterns.fromPattern("[auth][year]");
         GuiPreferences guiPreferences = mock(GuiPreferences.class);
         filePreferences = mock(FilePreferences.class);

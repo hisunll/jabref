@@ -40,7 +40,10 @@ class RenamePdfCleanupTest {
         this.testFolder = testFolder;
         Path path = testFolder.resolve("test.bib");
         MetaData metaData = new MetaData();
-        BibDatabaseContext context = new BibDatabaseContext(new BibDatabase(), metaData);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(new BibDatabase())
+                                                       .withMetaData(metaData)
+                                                       .build();
         context.setDatabasePath(path);
 
         entry = new BibEntry();
