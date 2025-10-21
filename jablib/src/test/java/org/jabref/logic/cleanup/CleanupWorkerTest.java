@@ -91,7 +91,7 @@ class CleanupWorkerTest {
         entry.setField(StandardField.ABSTRACT, "Réflexions");
         Path path = bibFolder.resolve("ARandomlyNamedFile");
         Files.createFile(path);
-        LinkedFile fileField = new LinkedFile("", path.toAbsolutePath(), "");
+        LinkedFile fileField = LinkedFile.of("", path.toAbsolutePath(), "");
         entry.setField(StandardField.FILE, FileFieldWriter.getStringRepresentation(fileField));
 
         List<FieldChange> changes = worker.cleanup(emptyPreset, entry);
@@ -217,11 +217,11 @@ class CleanupWorkerTest {
         Files.createDirectory(path);
         Path tempFile = Files.createFile(path.resolve("test.pdf"));
         BibEntry entry = new BibEntry();
-        LinkedFile fileField = new LinkedFile("", tempFile.toAbsolutePath(), "");
+        LinkedFile fileField = LinkedFile.of("", tempFile.toAbsolutePath(), "");
         entry.setField(StandardField.FILE, FileFieldWriter.getStringRepresentation(fileField));
 
         worker.cleanup(preset, entry);
-        LinkedFile newFileField = new LinkedFile("", tempFile.getFileName(), "");
+        LinkedFile newFileField = LinkedFile.of("", tempFile.getFileName(), "");
         assertEquals(Optional.of(FileFieldWriter.getStringRepresentation(newFileField)), entry.getField(StandardField.FILE));
     }
 
@@ -232,11 +232,11 @@ class CleanupWorkerTest {
         Path path = pdfPath.resolve("AnotherRandomlyNamedFile");
         Files.createFile(path);
         BibEntry entry = new BibEntry();
-        LinkedFile fileField = new LinkedFile("", path.toAbsolutePath(), "");
+        LinkedFile fileField = LinkedFile.of("", path.toAbsolutePath(), "");
         entry.setField(StandardField.FILE, FileFieldWriter.getStringRepresentation(fileField));
 
         worker.cleanup(preset, entry);
-        LinkedFile newFileField = new LinkedFile("", path.getFileName(), "");
+        LinkedFile newFileField = LinkedFile.of("", path.getFileName(), "");
         assertEquals(Optional.of(FileFieldWriter.getStringRepresentation(newFileField)), entry.getField(StandardField.FILE));
     }
 
@@ -248,11 +248,11 @@ class CleanupWorkerTest {
         Files.createFile(path);
         BibEntry entry = new BibEntry()
                 .withCitationKey("Toot");
-        LinkedFile fileField = new LinkedFile("", path.toAbsolutePath(), "");
+        LinkedFile fileField = LinkedFile.of("", path.toAbsolutePath(), "");
         entry.setField(StandardField.FILE, FileFieldWriter.getStringRepresentation(fileField));
 
         worker.cleanup(preset, entry);
-        LinkedFile newFileField = new LinkedFile("", Path.of("Toot.tmp"), "");
+        LinkedFile newFileField = LinkedFile.of("", Path.of("Toot.tmp"), "");
         assertEquals(Optional.of(FileFieldWriter.getStringRepresentation(newFileField)), entry.getField(StandardField.FILE));
     }
 
