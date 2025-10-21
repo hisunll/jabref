@@ -61,9 +61,6 @@ public class LinkedFile implements Serializable {
         this(description, link, fileType.getName());
     }
 
-    /**
-     * Constructor can also be used for non-valid paths. We need to parse them, because the GUI needs to render it.
-     */
     private LinkedFile(String description, String link, String fileType, String sourceUrl) {
         this.description.setValue(description);
         setLink(link);
@@ -87,9 +84,6 @@ public class LinkedFile implements Serializable {
         this(description, link.toString(), fileType, sourceUrl);
     }
 
-    /**
-     * Constructs a new LinkedFile with an empty file type and an empty description
-     */
     private LinkedFile(Path link) {
         this("", link, "");
     }
@@ -105,6 +99,10 @@ public class LinkedFile implements Serializable {
     public static LinkedFile of(String description, String link, FileType fileType) {
         return new LinkedFile(description, link, fileType);
     }
+
+    /**
+     * Factory method for LinkedFile with a non-valid path, as the GUI needs to render it.
+     */
     public static LinkedFile of(String description, String link, String fileType, String sourceUrl) {
         return new LinkedFile(description, link, fileType, sourceUrl);
     }
@@ -125,6 +123,9 @@ public class LinkedFile implements Serializable {
         return new LinkedFile(description, link, fileType, sourceUrl);
     }
 
+    /**
+     * Factory method for a new LinkedFile with an empty file type and an empty description.
+     */
     public static LinkedFile of(Path link) {
         return new LinkedFile(link);
     }
