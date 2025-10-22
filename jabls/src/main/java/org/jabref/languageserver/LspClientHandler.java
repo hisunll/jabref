@@ -3,13 +3,9 @@ package org.jabref.languageserver;
 import java.util.concurrent.CompletableFuture;
 
 import org.jabref.languageserver.util.LspDiagnosticHandler;
-import org.jabref.languageserver.util.LspLinkHandler;
-import org.jabref.languageserver.util.LspParserHandler;
 import org.jabref.logic.journals.JournalAbbreviationRepository;
 import org.jabref.logic.preferences.CliPreferences;
-import org.jabref.logic.remote.server.RemoteMessageHandler;
 
-import org.eclipse.lsp4j.DocumentLinkOptions;
 import org.eclipse.lsp4j.InitializeParams;
 import org.eclipse.lsp4j.InitializeResult;
 import org.eclipse.lsp4j.MessageParams;
@@ -31,24 +27,17 @@ public class LspClientHandler implements LanguageServer, LanguageClientAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(LspClientHandler.class);
 
     private final LspDiagnosticHandler diagnosticHandler;
-    private final LspParserHandler parserHandler;
-    private final LspLinkHandler linkHandler;
     private final BibtexWorkspaceService workspaceService;
     private final BibtexTextDocumentService textDocumentService;
     private final ExtensionSettings settings;
-    private final RemoteMessageHandler messageHandler;
 
     private LanguageClient client;
-    private boolean standalone = false;
 
-    public LspClientHandler(RemoteMessageHandler messageHandler, CliPreferences cliPreferences, JournalAbbreviationRepository abbreviationRepository) {
+    public LspClientHandler(CliPreferences cliPreferences, JournalAbbreviationRepository abbreviationRepository) {
         this.settings = ExtensionSettings.getDefaultSettings();
-        this.parserHandler = new LspParserHandler();
-        this.diagnosticHandler = new LspDiagnosticHandler(this, parserHandler, cliPreferences, abbreviationRepository);
-        this.linkHandler = new LspLinkHandler(parserHandler);
+        this.diagnosticHandler = new LspDiagnosticHandler(this, cliPreferences, abbreviationRepository);
         this.workspaceService = new BibtexWorkspaceService(this, diagnosticHandler);
-        this.textDocumentService = new BibtexTextDocumentService(messageHandler, this, diagnosticHandler, linkHandler);
-        this.messageHandler = messageHandler;
+        this.textDocumentService = new BibtexTextDocumentService(diagnosticHandler);
     }
 
     @Override
@@ -62,11 +51,6 @@ public class LspClientHandler implements LanguageServer, LanguageClientAware {
 
         capabilities.setTextDocumentSync(syncOptions);
         capabilities.setWorkspace(new WorkspaceServerCapabilities());
-        capabilities.setDefinitionProvider(true);
-
-        DocumentLinkOptions linkOptions = new DocumentLinkOptions();
-        linkOptions.setResolveProvider(true);
-        capabilities.setDocumentLinkProvider(linkOptions);
 
         return CompletableFuture.completedFuture(new InitializeResult(capabilities));
     }
@@ -103,13 +87,5 @@ public class LspClientHandler implements LanguageServer, LanguageClientAware {
         workspaceService.setClient(client);
         textDocumentService.setClient(client);
         client.logMessage(new MessageParams(MessageType.Warning, "BibtexLSPServer connected."));
-    }
-
-    public void setStandalone(boolean standalone) {
-        this.standalone = standalone;
-    }
-
-    public boolean isStandalone() {
-        return standalone;
     }
 }

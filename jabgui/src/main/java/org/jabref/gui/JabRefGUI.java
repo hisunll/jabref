@@ -424,10 +424,12 @@ public class JabRefGUI extends Application {
     // Background tasks
     public void startBackgroundTasks() {
         RemotePreferences remotePreferences = preferences.getRemotePreferences();
-        CLIMessageHandler cliMessageHandler = new CLIMessageHandler(mainFrame, preferences);
+
         if (remotePreferences.useRemoteServer()) {
             remoteListenerServerManager.openAndStart(
-                    cliMessageHandler,
+                    new CLIMessageHandler(
+                            mainFrame,
+                            preferences),
                     remotePreferences.getPort());
         }
 
@@ -435,7 +437,7 @@ public class JabRefGUI extends Application {
             httpServerManager.start(stateManager, remotePreferences.getHttpServerUri());
         }
         if (remotePreferences.enableLanguageServer()) {
-            languageServerController.start(cliMessageHandler, remotePreferences.getLanguageServerPort());
+            languageServerController.start(remotePreferences.getLanguageServerPort());
         }
     }
 
