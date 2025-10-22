@@ -68,7 +68,7 @@ public class BibDatabaseContext {
     private CoarseChangeFilter dbmsListener;
     private DatabaseLocation location;
 
-    public BibDatabaseContext(final Builder builder) {
+    private BibDatabaseContext(final Builder builder) {
         this.database = builder.database;
         this.metaData = builder.metaData;
         this.path = builder.path;
@@ -79,10 +79,18 @@ public class BibDatabaseContext {
         }
     }
 
+    /**
+     * Returns a new {@link Builder} instance for constructing a {@code BibDatabaseContext}.
+     *
+     * @return A new Builder instance initialized with default components (empty database and metadata).
+     */
     public static Builder builder() {
         return new Builder();
     }
 
+    /**
+     * Builder class for creating and configuring a {@link BibDatabaseContext}.
+     */
     public static class Builder {
         private @NonNull BibDatabase database;
         private @NonNull MetaData metaData;
@@ -94,26 +102,55 @@ public class BibDatabaseContext {
             this.metaData = new MetaData();
         }
 
+        /**
+         * Sets the {@link BibDatabase} to be used in the context.
+         *
+         * @param database The BibTeX database object. Must not be null.
+         * @return This builder instance for chaining.
+         */
         public Builder withDatabase(@NonNull BibDatabase database) {
             this.database = database;
             return this;
         }
 
+        /**
+         * Sets the {@link MetaData} associated with the database.
+         *
+         * @param metaData The database metadata object. Must not be null.
+         * @return This builder instance for chaining.
+         */
         public Builder withMetaData(@NonNull MetaData metaData) {
             this.metaData = metaData;
             return this;
         }
 
+        /**
+         * Sets the file system path where the database is located.
+         *
+         * @param path The {@link Path} to the BibTeX file. Can be null if the database is remote or unsaved.
+         * @return This builder instance for chaining.
+         */
         public Builder withDatabasePath(Path path) {
             this.path = path;
             return this;
         }
 
+        /**
+         * Sets the location status of the database (Local or Remote).
+         *
+         * @param location The {@link DatabaseLocation} status. Must not be null.
+         * @return This builder instance for chaining.
+         */
         public Builder withLocation(@NonNull DatabaseLocation location) {
             this.location = location;
             return this;
         }
 
+        /**
+         * Builds the final immutable {@link BibDatabaseContext} object.
+         *
+         * @return A fully constructed {@code BibDatabaseContext}.
+         */
         public BibDatabaseContext build() {
             return new BibDatabaseContext(this);
         }

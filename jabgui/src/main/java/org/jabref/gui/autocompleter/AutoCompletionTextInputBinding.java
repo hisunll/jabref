@@ -66,10 +66,6 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
         }
     };
 
-    /**
-     * Creates a new auto-completion binding between the given textInputControl
-     * and the given suggestion provider.
-     */
     private AutoCompletionTextInputBinding(final Builder<T> builder) {
         super(builder.textInputControl, builder.suggestionProvider, builder.converter);
         this.converter = builder.converter;
@@ -94,6 +90,11 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
         };
     }
 
+    /**
+     * Returns a new {@link AutoCompletionTextInputBinding.Builder} instance for constructing a {@code AutoCompletionTextInputBinding}.
+     *
+     * @return A new Builder instance initialized with default components (empty database and metadata).
+     */
     public static <T> Builder<T> builder() {
         return new Builder<>();
     }
@@ -134,85 +135,89 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
         this.showOnFocus = showOnFocus;
     }
 
+    /**
+     * A Builder class used to construct and configure an {@code AutoCompletionTextInputBinding}.
+     *
+     * @param <T> The type of the suggestion objects provided by the suggestion provider.
+     */
     public static class Builder<T> {
-            private TextInputControl textInputControl;
-            private Callback<ISuggestionRequest, Collection<T>> suggestionProvider;
-            private StringConverter<T> converter = AutoCompletionTextInputBinding.defaultStringConverter();
-            private AutoCompletionStrategy inputAnalyzer = new ReplaceStrategy();
-            private boolean showOnFocus = false; // Assuming default is false
+        private TextInputControl textInputControl;
+        private Callback<ISuggestionRequest, Collection<T>> suggestionProvider;
+        private StringConverter<T> converter = AutoCompletionTextInputBinding.defaultStringConverter();
+        private AutoCompletionStrategy inputAnalyzer = new ReplaceStrategy();
+        private boolean showOnFocus = false; // Assuming default is false
 
-            /**
-             * Sets the required TextInputControl.
-             *
-             * @param textInputControl The TextInputControl to bind to.
-             * @return The builder instance.
-             */
-            public Builder<T> forTextInputControl(TextInputControl textInputControl) {
-                this.textInputControl = textInputControl;
-                return this;
-            }
-
-            /**
-             * Sets the required suggestion provider.
-             *
-             * @param suggestionProvider The callback to retrieve suggestions.
-             * @return The builder instance.
-             */
-            @SuppressWarnings("unchecked")
-            public Builder<T> usingSuggestionProvider(Callback<ISuggestionRequest, Collection<?>> suggestionProvider) {
-                this.suggestionProvider = (Callback<ISuggestionRequest, Collection<T>>) (Callback<?, ?>) suggestionProvider;
-                return this;
-            }
-
-            /**
-             * Sets the optional StringConverter.
-             *
-             * @param converter The converter for suggestions to strings.
-             * @return The builder instance.
-             */
-            public Builder<T> withStringConverter(StringConverter<T> converter) {
-                this.converter = converter;
-                return this;
-            }
-
-            /**
-             * Sets the optional AutoCompletionStrategy.
-             *
-             * @param inputAnalyzer The strategy to analyze the input text.
-             * @return The builder instance.
-             */
-            public Builder<T> withInputAnalyzer(AutoCompletionStrategy inputAnalyzer) {
-                this.inputAnalyzer = inputAnalyzer;
-                return this;
-            }
-
-            /**
-             * Sets whether the popup should show on focus gain.
-             * @param showOnFocus True to show on focus, false otherwise.
-             * @return The builder instance.
-             */
-            public Builder<T> showOnFocus(boolean showOnFocus) {
-                this.showOnFocus = showOnFocus;
-                return this;
-            }
-
-            /**
-             * Builds the AutoCompletionTextInputBinding object.
-             * @return A new instance of AutoCompletionTextInputBinding.
-             * @throws NullPointerException if required fields are not set.
-             */
-            public AutoCompletionTextInputBinding<T> build() {
-                Objects.requireNonNull(textInputControl, "TextInputControl is required.");
-                Objects.requireNonNull(suggestionProvider, "SuggestionProvider is required.");
-
-                if (converter == null) {
-                    converter = AutoCompletionTextInputBinding.defaultStringConverter();
-                }
-                if (inputAnalyzer == null) {
-                    inputAnalyzer = new ReplaceStrategy(); // Assuming ReplaceStrategy is the default
-                }
-
-                return new AutoCompletionTextInputBinding<>(this);
-            }
+        /**
+         * Sets the required TextInputControl.
+         *
+         * @param textInputControl The TextInputControl to bind to.
+         * @return The builder instance.
+         */
+        public Builder<T> forTextInputControl(TextInputControl textInputControl) {
+            this.textInputControl = textInputControl;
+            return this;
         }
+
+        /**
+         * Sets the required suggestion provider.
+         *
+         * @param suggestionProvider The callback to retrieve suggestions.
+         * @return The builder instance.
+         */
+        @SuppressWarnings("unchecked")
+        public Builder<T> usingSuggestionProvider(Callback<ISuggestionRequest, Collection<?>> suggestionProvider) {
+            this.suggestionProvider = (Callback<ISuggestionRequest, Collection<T>>) (Callback<?, ?>) suggestionProvider;
+            return this;
+        }
+
+        /**
+         * Sets the optional StringConverter.
+         *
+         * @param converter The converter for suggestions to strings.
+         * @return The builder instance.
+         */
+        public Builder<T> withStringConverter(StringConverter<T> converter) {
+            this.converter = converter;
+            return this;
+        }
+
+        /**
+         * Sets the optional AutoCompletionStrategy.
+         *
+         * @param inputAnalyzer The strategy to analyze the input text.
+         * @return The builder instance.
+         */
+        public Builder<T> withInputAnalyzer(AutoCompletionStrategy inputAnalyzer) {
+            this.inputAnalyzer = inputAnalyzer;
+            return this;
+        }
+
+        /**
+         * Sets whether the popup should show on focus gain.
+         * @param showOnFocus True to show on focus, false otherwise.
+         * @return The builder instance.
+         */
+        public Builder<T> showOnFocus(boolean showOnFocus) {
+            this.showOnFocus = showOnFocus;
+            return this;
+        }
+
+        /**
+         * Builds the AutoCompletionTextInputBinding object.
+         * @return A new instance of AutoCompletionTextInputBinding.
+         */
+        public AutoCompletionTextInputBinding<T> build() {
+            Objects.requireNonNull(textInputControl, "TextInputControl is required.");
+            Objects.requireNonNull(suggestionProvider, "SuggestionProvider is required.");
+
+            if (converter == null) {
+                converter = AutoCompletionTextInputBinding.defaultStringConverter();
+            }
+            if (inputAnalyzer == null) {
+                inputAnalyzer = new ReplaceStrategy(); // Assuming ReplaceStrategy is the default
+            }
+
+            return new AutoCompletionTextInputBinding<>(this);
+        }
+    }
 }

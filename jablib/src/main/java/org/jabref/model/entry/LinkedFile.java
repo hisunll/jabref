@@ -88,43 +88,115 @@ public class LinkedFile implements Serializable {
         this("", link, "");
     }
 
+    /**
+     * Creates a new {@code LinkedFile} instance using a description, a local file path, and a file type.
+     *
+     * @param description The descriptive name of the file.
+     * @param link The path ({@link java.nio.file.Path}) to the file on the local filesystem.
+     * @param fileType A string representing the file's MIME type or extension (e.g., "pdf", "image/png").
+     * @return A new {@code LinkedFile} instance.
+     */
     public static LinkedFile of(String description, Path link, String fileType) {
         return new LinkedFile(description, link, fileType);
     }
 
+    /**
+     * Creates a new {@code LinkedFile} instance with a description, local path, file type, and a source URL.
+     *
+     * @param description The descriptive name of the file.
+     * @param link The path ({@link java.nio.file.Path}) to the file on the local filesystem.
+     * @param fileType A string representing the file's type.
+     * @param sourceUrl The original source URL from which the file was retrieved, which may be null or empty.
+     * @return A new {@code LinkedFile} instance.
+     */
     public static LinkedFile of(String description, Path link, String fileType, String sourceUrl) {
         return new LinkedFile(description, link, fileType, sourceUrl);
     }
 
+    /**
+     * Creates a new {@code LinkedFile} instance using a description, a link string, and an enumerated file type.
+     * <p>This method is typically used for links represented as a URI {@code String} that haven't been resolved to a concrete {@code Path}.
+     *
+     * @param description The descriptive name of the file.
+     * @param link The string representation of the file link (e.g., a local path string or URI).
+     * @param fileType The predefined {@code FileType} enumeration value.
+     * @return A new {@code LinkedFile} instance.
+     */
     public static LinkedFile of(String description, String link, FileType fileType) {
         return new LinkedFile(description, link, fileType);
     }
 
     /**
      * Factory method for LinkedFile with a non-valid path, as the GUI needs to render it.
+     *
+     * <p>Creates a new {@code LinkedFile} instance using a description, a link string, a file type string, and a source URL.
+     * This is primarily for GUI rendering where the {@code link} string might be an unresolved or **non-valid** path.</p>
+     *
+     * @param description The descriptive name of the file.
+     * @param link The string representation of the file link (may be a non-valid path).
+     * @param fileType A string representing the file's type.
+     * @param sourceUrl The original source URL.
+     * @return A new {@code LinkedFile} instance.
      */
     public static LinkedFile of(String description, String link, String fileType, String sourceUrl) {
         return new LinkedFile(description, link, fileType, sourceUrl);
     }
 
+    /**
+     * Creates a new {@code LinkedFile} instance using a description, a link string, and a file type string.
+     *
+     * @param description The descriptive name of the file.
+     * @param link The string representation of the file link.
+     * @param fileType A string representing the file's type.
+     * @return A new {@code LinkedFile} instance.
+     */
     public static LinkedFile of(String description, String link, String fileType) {
         return new LinkedFile(description, link, fileType);
     }
 
+    /**
+     * Creates a new {@code LinkedFile} instance using a {@link java.net.URL} link and a file type, inferring the description or leaving it empty.
+     *
+     * @param link The remote {@link java.net.URL} for the file.
+     * @param fileType A string representing the file's type.
+     * @return A new {@code LinkedFile} instance.
+     */
     public static LinkedFile of(URL link, String fileType) {
         return new LinkedFile(link, fileType);
     }
 
+    /**
+     * Creates a new {@code LinkedFile} instance using a description, a {@link java.net.URL} link, and a file type.
+     *
+     * @param description The descriptive name of the file.
+     * @param link The remote {@link java.net.URL} for the file.
+     * @param fileType A string representing the file's type.
+     * @return A new {@code LinkedFile} instance.
+     */
     public static LinkedFile of(String description, URL link, String fileType) {
         return new LinkedFile(description, link, fileType);
     }
 
+    /**
+     * Creates a new {@code LinkedFile} instance using a description, a {@link java.net.URL} link, a file type, and a source URL.
+     *
+     * @param description The descriptive name of the file.
+     * @param link The remote {@link java.net.URL} for the file.
+     * @param fileType A string representing the file's type.
+     * @param sourceUrl The original source URL (in this context, often redundant but maintained for consistency).
+     * @return A new {@code LinkedFile} instance.
+     */
     public static LinkedFile of(String description, URL link, String fileType, String sourceUrl) {
         return new LinkedFile(description, link, fileType, sourceUrl);
     }
 
     /**
      * Factory method for a new LinkedFile with an empty file type and an empty description.
+     *
+     * <p>Creates a new {@code LinkedFile} instance using only the local file path, with description and file type set to default/empty values.</p>
+     *
+     * @param link The path ({@link java.nio.file.Path}) to the file on the local filesystem.
+     * @return A new {@code LinkedFile} instance.
      */
     public static LinkedFile of(Path link) {
         return new LinkedFile(link);
