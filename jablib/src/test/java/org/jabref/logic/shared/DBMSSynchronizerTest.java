@@ -64,7 +64,9 @@ class DBMSSynchronizerTest {
         this.dbmsProcessor.setupSharedDatabase();
 
         bibDatabase = new BibDatabase();
-        BibDatabaseContext context = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(bibDatabase)
+                                                       .build();
 
         FieldPreferences fieldPreferences = mock(FieldPreferences.class);
         when(fieldPreferences.getNonWrappableFields()).thenReturn(FXCollections.observableArrayList());

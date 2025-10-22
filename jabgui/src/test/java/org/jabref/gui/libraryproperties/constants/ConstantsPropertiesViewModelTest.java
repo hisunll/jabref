@@ -30,7 +30,9 @@ class ConstantsPropertiesViewModelTest {
         BibtexString string2 = new BibtexString("ICSE", "International Conference on Software Engineering");
         BibDatabase db = new BibDatabase();
         db.setStrings(List.of(string1, string2));
-        BibDatabaseContext context = new BibDatabaseContext(db);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(db)
+                                                       .build();
         List<String> expected = List.of(string2.getName(), string1.getName()); // ICSE before TSE
 
         ConstantsPropertiesViewModel model = new ConstantsPropertiesViewModel(context, service, externalApplicationsPreferences);
@@ -50,7 +52,9 @@ class ConstantsPropertiesViewModelTest {
     @Test
     void stringsListPropertyResorting() {
         BibDatabase db = new BibDatabase();
-        BibDatabaseContext context = new BibDatabaseContext(db);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(db)
+                                                       .build();
         List<String> expected = List.of("ICSE", "TSE");
 
         ConstantsPropertiesViewModel model = new ConstantsPropertiesViewModel(context, service, externalApplicationsPreferences);
@@ -71,7 +75,9 @@ class ConstantsPropertiesViewModelTest {
     @Test
     void storeSettingsWithStringConstantTest() {
         BibDatabase db = new BibDatabase();
-        BibDatabaseContext context = new BibDatabaseContext(db);
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(db)
+                                                       .build();
 
         ConstantsPropertiesViewModel model = new ConstantsPropertiesViewModel(context, service, externalApplicationsPreferences);
 

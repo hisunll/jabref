@@ -87,7 +87,7 @@ class PdfMergeMetadataImporterTest {
         expected.setField(StandardField.VOLUME, "1");
 
         // From merge
-        expected.setFiles(List.of(new LinkedFile("", file.toAbsolutePath(), StandardFileType.PDF.getName())));
+        expected.setFiles(List.of(LinkedFile.of("", file.toAbsolutePath(), StandardFileType.PDF.getName())));
 
         assertEquals(List.of(expected), result);
     }
@@ -149,7 +149,7 @@ class PdfMergeMetadataImporterTest {
     void importRelativizesFilePath() throws URISyntaxException, IOException {
         // Initialize database and preferences
         FilePreferences preferences = mock(FilePreferences.class);
-        BibDatabaseContext database = new BibDatabaseContext();
+        BibDatabaseContext database = BibDatabaseContext.builder().build();
 
         // Initialize file and working directory
         Path file = Path.of(PdfMergeMetadataImporter.class.getResource("/pdfs/minimal.pdf").toURI());

@@ -44,7 +44,10 @@ public class SimpleEditor extends HBox implements FieldEditorFX {
         this.getChildren().add(textInput);
 
         if (!isMultiLine) {
-            AutoCompletionTextInputBinding<?> autoCompleter = AutoCompletionTextInputBinding.autoComplete(textInput, viewModel::complete, viewModel.getAutoCompletionStrategy());
+            AutoCompletionTextInputBinding<?> autoCompleter = AutoCompletionTextInputBinding.builder()
+                    .forTextInputControl(textInput)
+                    .usingSuggestionProvider(viewModel::complete)
+                    .withInputAnalyzer(viewModel.getAutoCompletionStrategy()).build();
             if (suggestionProvider instanceof ContentSelectorSuggestionProvider) {
                 // If content selector values are present, then we want to show the auto complete suggestions immediately on focus
                 autoCompleter.setShowOnFocus(true);

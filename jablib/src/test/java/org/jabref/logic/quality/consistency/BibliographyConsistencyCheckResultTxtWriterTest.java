@@ -42,7 +42,9 @@ class BibliographyConsistencyCheckResultTxtWriterTest {
         database.insertEntry(first);
         database.insertEntry(second);
 
-        BibDatabaseContext bibContext = new BibDatabaseContext(database);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(database)
+                                                          .build();
         bibContext.setMode(BibDatabaseMode.BIBTEX);
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (count, total) -> {
         });
@@ -85,7 +87,9 @@ class BibliographyConsistencyCheckResultTxtWriterTest {
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntries(bibEntriesList);
 
-        BibDatabaseContext bibContext = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(bibDatabase)
+                                                          .build();
         bibContext.setMode(BibDatabaseMode.BIBLATEX);
 
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck()
@@ -128,7 +132,9 @@ class BibliographyConsistencyCheckResultTxtWriterTest {
         List<BibEntry> bibEntriesList = List.of(first, second);
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntries(bibEntriesList);
-        BibDatabaseContext bibContext = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(bibDatabase)
+                                                          .build();
         bibContext.setMode(BibDatabaseMode.BIBTEX);
 
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (_, _) -> {
@@ -169,7 +175,9 @@ class BibliographyConsistencyCheckResultTxtWriterTest {
         List<BibEntry> bibEntriesList = List.of(first, second);
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntries(bibEntriesList);
-        BibDatabaseContext bibContext = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(bibDatabase)
+                                                          .build();
         bibContext.setMode(BibDatabaseMode.BIBTEX);
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (_, _) -> {
         });
@@ -226,7 +234,9 @@ class BibliographyConsistencyCheckResultTxtWriterTest {
         List<BibEntry> bibEntriesList = List.of(first, second, third, fourth, fifth, sixth);
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntries(bibEntriesList);
-        BibDatabaseContext bibContext = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(bibDatabase)
+                                                          .build();
 
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (_, _) -> {
         });
@@ -268,7 +278,9 @@ class BibliographyConsistencyCheckResultTxtWriterTest {
         List<BibEntry> bibEntriesList = List.of(first, second);
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntries(bibEntriesList);
-        BibDatabaseContext bibContext = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(bibDatabase)
+                                                          .build();
 
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (_, _) -> {
         });
@@ -296,7 +308,9 @@ class BibliographyConsistencyCheckResultTxtWriterTest {
         List<BibEntry> bibEntriesList = List.of(first, second);
         BibDatabase bibDatabase = new BibDatabase();
         bibDatabase.insertEntries(bibEntriesList);
-        BibDatabaseContext bibContext = new BibDatabaseContext(bibDatabase);
+        BibDatabaseContext bibContext = BibDatabaseContext.builder()
+                                                          .withDatabase(bibDatabase)
+                                                          .build();
 
         BibliographyConsistencyCheck.Result result = new BibliographyConsistencyCheck().check(bibContext, (_, _) -> {
         });

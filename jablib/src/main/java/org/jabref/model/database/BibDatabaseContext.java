@@ -68,30 +68,91 @@ public class BibDatabaseContext {
     private CoarseChangeFilter dbmsListener;
     private DatabaseLocation location;
 
-    public BibDatabaseContext() {
-        this(new BibDatabase());
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database) {
-        this(database, new MetaData());
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database, @NonNull MetaData metaData) {
-        this.database = database;
-        this.metaData = metaData;
-        this.location = DatabaseLocation.LOCAL;
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database, @NonNull MetaData metaData, Path path) {
-        this(database, metaData, path, DatabaseLocation.LOCAL);
-    }
-
-    public BibDatabaseContext(@NonNull BibDatabase database, @NonNull MetaData metaData, Path path, @NonNull DatabaseLocation location) {
-        this(database, metaData);
-        this.path = path;
+    private BibDatabaseContext(final Builder builder) {
+        this.database = builder.database;
+        this.metaData = builder.metaData;
+        this.path = builder.path;
+        this.location = builder.location;
 
         if (location == DatabaseLocation.LOCAL) {
             convertToLocalDatabase();
+        }
+    }
+
+    /**
+     * Returns a new {@link Builder} instance for constructing a {@code BibDatabaseContext}.
+     *
+     * @return A new Builder instance initialized with default components (empty database and metadata).
+     */
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    /**
+     * Builder class for creating and configuring a {@link BibDatabaseContext}.
+     */
+    public static class Builder {
+        private @NonNull BibDatabase database;
+        private @NonNull MetaData metaData;
+        private Path path = null;
+        private @NonNull DatabaseLocation location = DatabaseLocation.LOCAL;
+
+        private Builder() {
+            this.database = new BibDatabase();
+            this.metaData = new MetaData();
+        }
+
+        /**
+         * Sets the {@link BibDatabase} to be used in the context.
+         *
+         * @param database The BibTeX database object. Must not be null.
+         * @return This builder instance for chaining.
+         */
+        public Builder withDatabase(@NonNull BibDatabase database) {
+            this.database = database;
+            return this;
+        }
+
+        /**
+         * Sets the {@link MetaData} associated with the database.
+         *
+         * @param metaData The database metadata object. Must not be null.
+         * @return This builder instance for chaining.
+         */
+        public Builder withMetaData(@NonNull MetaData metaData) {
+            this.metaData = metaData;
+            return this;
+        }
+
+        /**
+         * Sets the file system path where the database is located.
+         *
+         * @param path The {@link Path} to the BibTeX file. Can be null if the database is remote or unsaved.
+         * @return This builder instance for chaining.
+         */
+        public Builder withDatabasePath(Path path) {
+            this.path = path;
+            return this;
+        }
+
+        /**
+         * Sets the location status of the database (Local or Remote).
+         *
+         * @param location The {@link DatabaseLocation} status. Must not be null.
+         * @return This builder instance for chaining.
+         */
+        public Builder withLocation(@NonNull DatabaseLocation location) {
+            this.location = location;
+            return this;
+        }
+
+        /**
+         * Builds the final immutable {@link BibDatabaseContext} object.
+         *
+         * @return A fully constructed {@code BibDatabaseContext}.
+         */
+        public BibDatabaseContext build() {
+            return new BibDatabaseContext(this);
         }
     }
 
@@ -305,7 +366,7 @@ public class BibDatabaseContext {
     }
 
     public static BibDatabaseContext empty() {
-        return new BibDatabaseContext(new BibDatabase(), new MetaData());
+        return BibDatabaseContext.builder().build();
     }
 
     @Override

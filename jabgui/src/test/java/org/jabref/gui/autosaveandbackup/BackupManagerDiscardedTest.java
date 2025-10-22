@@ -50,7 +50,9 @@ class BackupManagerDiscardedTest {
 
         testBib = tempDir.resolve("test.bib");
 
-        bibDatabaseContext = new BibDatabaseContext(new BibDatabase());
+        bibDatabaseContext = BibDatabaseContext.builder()
+                                               .withDatabase(new BibDatabase())
+                                               .build();
         bibDatabaseContext.setDatabasePath(testBib);
 
         bibEntryTypesManager = new BibEntryTypesManager();

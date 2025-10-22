@@ -152,7 +152,9 @@ public class ArgumentProcessor implements Runnable {
                                        BibEntryTypesManager entryTypesManager,
                                        BibDatabase newBase,
                                        Path outputFile) {
-        saveDatabaseContext(cliPreferences, entryTypesManager, new BibDatabaseContext(newBase), outputFile);
+        saveDatabaseContext(cliPreferences, entryTypesManager, BibDatabaseContext.builder()
+                                                                                 .withDatabase(newBase)
+                                                                                 .build(), outputFile);
     }
 
     protected static void saveDatabaseContext(CliPreferences cliPreferences,

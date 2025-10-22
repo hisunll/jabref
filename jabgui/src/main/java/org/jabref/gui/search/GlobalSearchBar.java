@@ -392,10 +392,12 @@ public class GlobalSearchBar extends HBox {
 
     public void setAutoCompleter(SuggestionProvider<Author> searchCompleter) {
         if (preferences.getAutoCompletePreferences().shouldAutoComplete()) {
-            AutoCompletionTextInputBinding<Author> autoComplete = AutoCompletionTextInputBinding.autoComplete(searchField,
-                    searchCompleter::provideSuggestions,
-                    new PersonNameStringConverter(false, false, AutoCompleteFirstNameMode.BOTH),
-                    new AppendPersonNamesStrategy());
+            AutoCompletionTextInputBinding<Author> autoComplete = AutoCompletionTextInputBinding
+                    .<Author>builder()
+                    .forTextInputControl(searchField)
+                    .usingSuggestionProvider(searchCompleter::provideSuggestions)
+                    .withStringConverter(new PersonNameStringConverter(false, false, AutoCompleteFirstNameMode.BOTH))
+                    .withInputAnalyzer(new AppendPersonNamesStrategy()).build();
             AutoCompletePopup<Author> popup = getPopup(autoComplete);
             popup.setSkin(new SearchPopupSkin<>(popup));
         }

@@ -16,22 +16,22 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class EditionCheckerTest {
     @Test
     void isFirstCharacterANumber() {
-        assertTrue(createSimpleEditionChecker(new BibDatabaseContext(), false).isFirstCharDigit("0HelloWorld"));
+        assertTrue(createSimpleEditionChecker(BibDatabaseContext.builder().build(), false).isFirstCharDigit("0HelloWorld"));
     }
 
     @Test
     void isFirstCharacterANumberFalseForEmptyString() {
-        assertFalse(createSimpleEditionChecker(new BibDatabaseContext(), false).isFirstCharDigit(""));
+        assertFalse(createSimpleEditionChecker(BibDatabaseContext.builder().build(), false).isFirstCharDigit(""));
     }
 
     @Test
     void isFirstCharacterNotANumber() {
-        assertFalse(createSimpleEditionChecker(new BibDatabaseContext(), false).isFirstCharDigit("HelloWorld"));
+        assertFalse(createSimpleEditionChecker(BibDatabaseContext.builder().build(), false).isFirstCharDigit("HelloWorld"));
     }
 
     @Test
     void editionCheckerDoesNotComplainIfAllowIntegerEditionIsEnabled() {
-        assertEquals(Optional.empty(), createSimpleEditionChecker(new BibDatabaseContext(), true).checkValue("2"));
+        assertEquals(Optional.empty(), createSimpleEditionChecker(BibDatabaseContext.builder().build(), true).checkValue("2"));
     }
 
     @Test
@@ -95,13 +95,13 @@ class EditionCheckerTest {
     }
 
     private EditionChecker createBibtexEditionChecker(Boolean allowIntegerEdition) {
-        BibDatabaseContext bibtex = new BibDatabaseContext();
+        BibDatabaseContext bibtex = BibDatabaseContext.builder().build();
         bibtex.setMode(BibDatabaseMode.BIBTEX);
         return new EditionChecker(bibtex, allowIntegerEdition);
     }
 
     private EditionChecker createBiblatexEditionChecker(Boolean allowIntegerEdition) {
-        BibDatabaseContext biblatex = new BibDatabaseContext();
+        BibDatabaseContext biblatex = BibDatabaseContext.builder().build();
         biblatex.setMode(BibDatabaseMode.BIBLATEX);
         return new EditionChecker(biblatex, allowIntegerEdition);
     }

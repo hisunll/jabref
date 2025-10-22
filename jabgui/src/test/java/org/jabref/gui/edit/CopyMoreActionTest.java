@@ -159,7 +159,9 @@ class CopyMoreActionTest {
         BibEntry modified = new BibEntry(entry);
         remover.accept(modified);
         ObservableList<BibEntry> entries = FXCollections.observableArrayList(modified);
-        BibDatabaseContext databaseContext = new BibDatabaseContext(new BibDatabase(entries));
+        BibDatabaseContext databaseContext = BibDatabaseContext.builder()
+                                                               .withDatabase(new BibDatabase(entries))
+                                                               .build();
 
         when(stateManager.getActiveDatabase()).thenReturn(Optional.of(databaseContext));
         when(stateManager.getSelectedEntries()).thenReturn(entries);
@@ -176,7 +178,9 @@ class CopyMoreActionTest {
         BibEntry modified = new BibEntry(entry);
         remover.accept(modified);
         ObservableList<BibEntry> mixedEntries = FXCollections.observableArrayList(modified, entry);
-        BibDatabaseContext databaseContext = new BibDatabaseContext(new BibDatabase(mixedEntries));
+        BibDatabaseContext databaseContext = BibDatabaseContext.builder()
+                                                               .withDatabase(new BibDatabase(mixedEntries))
+                                                               .build();
 
         when(stateManager.getActiveDatabase()).thenReturn(Optional.of(databaseContext));
         when(stateManager.getSelectedEntries()).thenReturn(mixedEntries);
@@ -192,7 +196,9 @@ class CopyMoreActionTest {
     @MethodSource("getTestParams")
     void executeOnSuccess(StandardActions action, Consumer<BibEntry> remover, String ignoredNone, String ignoredWarning) {
         ObservableList<BibEntry> entries = FXCollections.observableArrayList(entry);
-        BibDatabaseContext databaseContext = new BibDatabaseContext(new BibDatabase(entries));
+        BibDatabaseContext databaseContext = BibDatabaseContext.builder()
+                                                               .withDatabase(new BibDatabase(entries))
+                                                               .build();
 
         when(stateManager.getActiveDatabase()).thenReturn(Optional.of(databaseContext));
         when(stateManager.getSelectedEntries()).thenReturn(entries);

@@ -89,7 +89,10 @@ class BibDatabaseWriterTest {
         initializeDatabaseWriter();
         database = new BibDatabase();
         metaData = new MetaData();
-        bibtexContext = new BibDatabaseContext(database, metaData);
+        bibtexContext = BibDatabaseContext.builder()
+                                          .withDatabase(database)
+                                          .withMetaData(metaData)
+                                          .build();
         importFormatPreferences = mock(ImportFormatPreferences.class, Answers.RETURNS_DEEP_STUBS);
         when(importFormatPreferences.fieldPreferences()).thenReturn(fieldPreferences);
     }
@@ -423,7 +426,10 @@ class BibDatabaseWriterTest {
         Charset encoding = StandardCharsets.UTF_8;
         ParserResult result = new BibtexParser(importFormatPreferences).parse(Importer.getReader(testBibtexFile));
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         // .gitattributes sets the .bib files to have LF line endings
         // This needs to be reflected here
@@ -463,7 +469,10 @@ class BibDatabaseWriterTest {
     void roundtripWin1252HeaderKept(@TempDir Path bibFolder) throws IOException, URISyntaxException {
         Path testFile = Path.of(BibDatabaseWriterTest.class.getResource("encoding-windows-1252-with-header.bib").toURI());
         ParserResult result = new BibtexImporter(importFormatPreferences, new DummyFileUpdateMonitor()).importDatabase(testFile);
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         Path pathToFile = bibFolder.resolve("JabRef.bib");
         Path file = Files.createFile(pathToFile);
@@ -487,7 +496,10 @@ class BibDatabaseWriterTest {
     void roundtripUtf8HeaderKept(@TempDir Path bibFolder) throws URISyntaxException, IOException {
         Path testFile = Path.of(BibDatabaseWriterTest.class.getResource("encoding-utf-8-with-header-with-databasetypecomment.bib").toURI());
         ParserResult result = new BibtexImporter(importFormatPreferences, new DummyFileUpdateMonitor()).importDatabase(testFile);
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         Path pathToFile = bibFolder.resolve("JabRef.bib");
         Path file = Files.createFile(pathToFile);
@@ -511,7 +523,10 @@ class BibDatabaseWriterTest {
     void roundtripNotExplicitUtf8HeaderNotInsertedDuringWrite(@TempDir Path bibFolder) throws URISyntaxException, IOException {
         Path testFile = Path.of(BibDatabaseWriterTest.class.getResource("encoding-utf-8-without-header-with-databasetypecomment.bib").toURI());
         ParserResult result = new BibtexImporter(importFormatPreferences, new DummyFileUpdateMonitor()).importDatabase(testFile);
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         Path pathToFile = bibFolder.resolve("JabRef.bib");
         Path file = Files.createFile(pathToFile);
@@ -537,7 +552,10 @@ class BibDatabaseWriterTest {
         Charset encoding = StandardCharsets.UTF_8;
         ParserResult result = new BibtexParser(importFormatPreferences).parse(Importer.getReader(testBibtexFile));
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         BibWriter bibWriter = new BibWriter(stringWriter, context.getDatabase().getNewLineSeparator());
         BibDatabaseWriter databaseWriter = new BibDatabaseWriter(
@@ -556,7 +574,10 @@ class BibDatabaseWriterTest {
         Charset encoding = StandardCharsets.UTF_8;
         ParserResult result = new BibtexParser(importFormatPreferences).parse(Importer.getReader(testBibtexFile));
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         // .gitattributes sets the .bib files to have LF line endings
         // This needs to be reflected here
@@ -582,7 +603,10 @@ class BibDatabaseWriterTest {
         BibEntry entry = result.getDatabase().getEntryByCitationKey("1137631").get();
         entry.setField(StandardField.AUTHOR, "Mr. Author");
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         // we need a new writer because "\n" instead of "OS.NEWLINE"
         bibWriter = new BibWriter(stringWriter, "\n");
@@ -614,7 +638,10 @@ class BibDatabaseWriterTest {
         BibEntry entry = result.getDatabase().getEntryByCitationKey("1137631").get();
         entry.setField(StandardField.AUTHOR, "Mr. Author");
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         // we need a new writer because "\n" instead of "OS.NEWLINE"
         bibWriter = new BibWriter(stringWriter, "\n");
@@ -637,7 +664,10 @@ class BibDatabaseWriterTest {
         BibEntry entry = result.getDatabase().getEntryByCitationKey("1137631").get();
         entry.setField(StandardField.AUTHOR, "Mr. Author");
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         // .gitattributes sets the .bib files to have LF line endings
         // This needs to be reflected here
@@ -658,7 +688,10 @@ class BibDatabaseWriterTest {
             string.setContent(string.getContent());
         }
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         // .gitattributes sets the .bib files to have LF line endings
         // This needs to be reflected here
@@ -675,7 +708,10 @@ class BibDatabaseWriterTest {
         Charset encoding = StandardCharsets.UTF_8;
         ParserResult result = new BibtexParser(importFormatPreferences).parse(Importer.getReader(testBibtexFile));
 
-        BibDatabaseContext context = new BibDatabaseContext(result.getDatabase(), result.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(result.getDatabase())
+                                                       .withMetaData(result.getMetaData())
+                                                       .build();
 
         // .gitattributes sets the .bib files to have LF line endings
         // This needs to be reflected here
@@ -961,7 +997,10 @@ class BibDatabaseWriterTest {
 
         ParserResult firstParse = new BibtexParser(importFormatPreferences).parse(Reader.of(fileContent));
 
-        BibDatabaseContext context = new BibDatabaseContext(firstParse.getDatabase(), firstParse.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(firstParse.getDatabase())
+                                                       .withMetaData(firstParse.getMetaData())
+                                                       .build();
 
         databaseWriter.savePartOfDatabase(context, firstParse.getDatabase().getEntries());
 
@@ -987,7 +1026,10 @@ class BibDatabaseWriterTest {
         // modify entry
         entry.setField(StandardField.AUTHOR, "BlaBla");
 
-        BibDatabaseContext context = new BibDatabaseContext(firstParse.getDatabase(), firstParse.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(firstParse.getDatabase())
+                                                       .withMetaData(firstParse.getMetaData())
+                                                       .build();
         context.setMode(BibDatabaseMode.BIBTEX);
 
         databaseWriter.savePartOfDatabase(context, firstParse.getDatabase().getEntries());
@@ -1038,7 +1080,10 @@ class BibDatabaseWriterTest {
         entry.setChanged(false);
 
         // write entry
-        BibDatabaseContext context = new BibDatabaseContext(firstParse.getDatabase(), firstParse.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(firstParse.getDatabase())
+                                                       .withMetaData(firstParse.getMetaData())
+                                                       .build();
         databaseWriter.savePartOfDatabase(context, firstParse.getDatabase().getEntries());
 
         assertEquals(bibtexEntry, stringWriter.toString());
@@ -1063,7 +1108,10 @@ class BibDatabaseWriterTest {
         // modify entry
         entry.setField(StandardField.AUTHOR, "BlaBla");
 
-        BibDatabaseContext context = new BibDatabaseContext(firstParse.getDatabase(), firstParse.getMetaData());
+        BibDatabaseContext context = BibDatabaseContext.builder()
+                                                       .withDatabase(firstParse.getDatabase())
+                                                       .withMetaData(firstParse.getMetaData())
+                                                       .build();
 
         databaseWriter.savePartOfDatabase(context, firstParse.getDatabase().getEntries());
 

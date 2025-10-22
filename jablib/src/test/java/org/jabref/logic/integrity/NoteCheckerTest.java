@@ -18,8 +18,8 @@ class NoteCheckerTest {
 
     @BeforeEach
     void setUp() {
-        BibDatabaseContext database = new BibDatabaseContext();
-        BibDatabaseContext databaseBiblatex = new BibDatabaseContext();
+        BibDatabaseContext database = BibDatabaseContext.builder().build();
+        BibDatabaseContext databaseBiblatex = BibDatabaseContext.builder().build();
         database.setMode(BibDatabaseMode.BIBTEX);
         checker = new NoteChecker(database);
         databaseBiblatex.setMode(BibDatabaseMode.BIBLATEX);
