@@ -143,8 +143,8 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
 
             /**
              * Sets the required TextInputControl.
-             * @param textInputControl The TextInputControl to bind to.
              *
+             * @param textInputControl The TextInputControl to bind to.
              * @return The builder instance.
              */
             public Builder<T> forTextInputControl(TextInputControl textInputControl) {
@@ -154,8 +154,8 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
 
             /**
              * Sets the required suggestion provider.
-             * @param suggestionProvider The callback to retrieve suggestions.
              *
+             * @param suggestionProvider The callback to retrieve suggestions.
              * @return The builder instance.
              */
             @SuppressWarnings("unchecked")
@@ -166,6 +166,7 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
 
             /**
              * Sets the optional StringConverter.
+             *
              * @param converter The converter for suggestions to strings.
              * @return The builder instance.
              */
@@ -176,8 +177,8 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
 
             /**
              * Sets the optional AutoCompletionStrategy.
-             * @param inputAnalyzer The strategy to analyze the input text.
              *
+             * @param inputAnalyzer The strategy to analyze the input text.
              * @return The builder instance.
              */
             public Builder<T> withInputAnalyzer(AutoCompletionStrategy inputAnalyzer) {
