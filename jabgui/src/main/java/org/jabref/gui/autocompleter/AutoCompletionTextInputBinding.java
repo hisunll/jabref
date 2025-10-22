@@ -193,17 +193,8 @@ public class AutoCompletionTextInputBinding<T> extends AutoCompletionBinding<T> 
         }
 
         /**
-         * Sets whether the popup should show on focus gain.
-         * @param showOnFocus True to show on focus, false otherwise.
-         * @return The builder instance.
-         */
-        public Builder<T> showOnFocus(boolean showOnFocus) {
-            this.showOnFocus = showOnFocus;
-            return this;
-        }
-
-        /**
          * Builds the AutoCompletionTextInputBinding object.
+         *
          * @return A new instance of AutoCompletionTextInputBinding.
          */
         public AutoCompletionTextInputBinding<T> build() {
